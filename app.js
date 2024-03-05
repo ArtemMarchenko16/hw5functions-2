@@ -138,12 +138,20 @@ console.log(arrayForIndex);
 // - Написати функцію обміну валюти exchange(sumUAH,currencyValues,exchangeCurrency)
 
 const exchangeCurrency = (sumUAH, currencyValues, exchangeCurrency) => {
-    if (!currencyValues.hasOwnProperty(exchangeCurrency)) {
-        console.log(`Помилка: Валюта ${exchangeCurrency} не знайдена.`);
-        return;
+    let found = false;
+
+    for (const currencyCode in currencyValues) {
+        if (currencyValues.hasOwnProperty(currencyCode) && currencyCode === exchangeCurrency) {
+            found = true;
+            const exchangedAmount = sumUAH / currencyValues[currencyCode];
+            console.log(`${sumUAH} UAH дорівнює приблизно ${exchangedAmount.toFixed(2)} ${currencyCode}.`);
+            break;
+        }
     }
-    const exchangedAmount = sumUAH / currencyValues[exchangeCurrency];
-    console.log(`${sumUAH} UAH дорівнює приблизно ${exchangedAmount.toFixed(2)} ${exchangeCurrency}.`);
+
+    if (!found) {
+        console.log(`Помилка: Валюта ${exchangeCurrency} не знайдена.`);
+    }
 };
 
 const currencyRates = {
@@ -155,4 +163,4 @@ const currencyRates = {
 exchangeCurrency(100, currencyRates, 'USD');
 exchangeCurrency(150, currencyRates, 'EUR');
 exchangeCurrency(200, currencyRates, 'GBP');
-exchangeCurrency(50, currencyRates, 'JPY'); //тут помилка)
+exchangeCurrency(50, currencyRates, 'JPY'); // тут помилка
